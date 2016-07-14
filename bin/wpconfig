@@ -11,7 +11,7 @@ require_once dirname( __DIR__ ) . '/src/wp-config-boilerplate.php';
 $saltsUrl    = 'https://api.wordpress.org/secret-key/1.1/salt/';
 $templateUrl = 'https://gist.githubusercontent.com/dnaber-de/e4a78f2354c5c5c1503f/raw/67a2d3766f6172828f6a6947f8ac4408810d3ea2/wp-config-sample.php';
 
-$args           = parseArgs( $GLOBALS[ 'argv' ], '1.0.0' );
+$args           = parseArgs( $GLOBALS[ 'argv' ], 'dev-master' );
 $printer        = printer( STDIN, $args );
 $linePrinter    = linePrinter( $printer );
 $errorPrinter   = linePrinter( printer( STDERR, $args ) );
