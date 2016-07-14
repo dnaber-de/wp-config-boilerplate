@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php # -*- coding: utf-8 -*-
+
+namespace WpConfigBoilerplate;
+
+use
+	Exception;
+
+require_once dirname( __DIR__ ) . '/src/wp-config-boilerplate.php';
+
+$saltsUrl    = 'https://api.wordpress.org/secret-key/1.1/salt/';
+$templateUrl = 'https://gist.githubusercontent.com/dnaber-de/e4a78f2354c5c5c1503f/raw/67a2d3766f6172828f6a6947f8ac4408810d3ea2/wp-config-sample.php';
+
+$args           = parseArgs( $GLOBALS[ 'argv' ], 'dev-master' );
+$printer        = printer( STDIN, $args );
+$linePrinter    = linePrinter( $printer );
+$errorPrinter   = linePrinter( printer( STDERR, $args ) );
+
+try {
+	if ( $args[ 'is_help' ] ) {
+		$helper = helper( $printer, $args );
+		$helper();
+		exit;
+	}
+	if ( file_exists( $args[ 'file' ] ) ) {
+		// do not override existing files
+		throw new Exception( "File {$args[ 'file' ]} already exists. Aborting." );
+	}
+	$fileRequest    = fileRequest( $args );
+	$constSanitizer = constantSanitizer( $args );
+	$fileWriter     = fileWriter( $args[ 'file' ], $args );
+
+	$linePrinter( 'Fetching random security salts from api.wordpress.org ...' );
+	$constants = $constSanitizer( $fileRequest( $saltsUrl ) );
+	$linePrinter( 'Fetching wp-config template from gist.github.com/dnaber-de/e4a78f2354c5c5c1503f ...' );
+	$config = $fileRequest( $templateUrl );
+	$config = str_replace( '%SECURITY_KEYS%', $constants, $config );
+	$fileWriter( $config );
+
+	$linePrinter( "Created {$args[ 'file']}" );
+} catch ( Exception $e ) {
+	$errorPrinter( "Error: {$e->getMessage()}" );
+	exit( 1 );
+}
+

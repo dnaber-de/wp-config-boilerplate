@@ -1,0 +1,16 @@
+{
+	"name": "dnaber/wp-config-boilerplate",
+	"description": "Creates a wp-config.php template",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "David Naber",
+			"email": "kontakt@dnaber.de",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.6",
+		"ext-curl": "*"
+	}
+}
