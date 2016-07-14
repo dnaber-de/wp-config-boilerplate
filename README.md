@@ -35,6 +35,6 @@ Clone the repository and symlink `bin/wpconfig` into your binary directory (e.g.
 
 Run
 ```
-$ composer require --global dnaber/wp-config-boilerplate
+$ composer global require dnaber/wp-config-boilerplate
 ```
  
